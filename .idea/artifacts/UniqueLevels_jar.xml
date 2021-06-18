@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="UniqueLevels:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/UniqueLevels_jar</output-path>
+    <root id="archive" name="UniqueLevels.jar">
+      <element id="module-output" name="UniqueLevels.main" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/resources" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,18 @@
+levels:
+  1: 1000
+  2: 2000
+  3: 3000
+  4: 4000
+
+prestige:
+  Coal: 5
+  Copper: 10
+  Iron: 15
+  Gold: 20
+  Diamond: 25
+  Netherite: 30
+
+rewards:
+  Coal:
+    commands:
+      - "[CONSOLE]give %player% cookie 1"

@@ -1,0 +1,11 @@
+name: UniqueLevels
+version: 0.0.1
+main: ga.uniquecoding.uniquelevels.UniqueLevels
+api-version: 1.17
+authors: [ Zaniey ]
+description: Levels, Prestiges and Rewards.
+
+commands:
+  uniquelevels:
+    description: The Default plugin command.
+    permission: uniquelevels.help
