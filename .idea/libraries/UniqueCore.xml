@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="UniqueCore">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../UniqueCore/out/artifacts/UniqueCore_jar/UniqueCore.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
