@@ -1,25 +1,45 @@
 package ga.uniquecoding.uniquelevels;
 
 import ga.uniquecoding.uniquelevels.commands.MainCommand;
+import ga.uniquecoding.uniquelevels.events.PlayerInitializer;
 import org.bukkit.plugin.java.JavaPlugin;
+
 
 public final class UniqueLevels extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("Loading...");
-
-        //Copies the default config.yml from within the .jar if "plugins/UniqueLevels/config.yml" does not exist
-        getConfig().options().copyDefaults(true);
-
-        getLogger().info("Initializing commands...");
-
-        this.getCommand("UniqueLevels").setExecutor(new MainCommand());
-
+    /*
+        All the enable stuff.
+    */
+        this.load();
+        this.registerEvents();
+        this.registerCommands();
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+    /*
+        Reload the configuration and other stuff.
+    */
+    public void reload() {
+        this.reloadConfig();
+    }
+    /*
+        The loading stuff.
+    */
+    public void load() {
+        getConfig().options().copyDefaults(true);
+        this.saveDefaultConfig();
+    }
+    /*
+        Registering all the events.
+    */
+    public void registerEvents() {
+        this.getServer().getPluginManager().registerEvents(new PlayerInitializer(), this);
+    }
+    /*
+        Registering all the commands.
+    */
+    public void registerCommands() {
+        this.getCommand("UniqueLevels").setExecutor(new MainCommand(this));
     }
 }
