@@ -1,25 +1,26 @@
 package ga.uniquecoding.uniquelevels.events;
 
-import ga.uniquecoding.uniquelevels.UniqueLevels;
-import ga.uniquecoding.uniquelevels.files.DataFile;
+import ga.uniquecoding.uniquelevels.files.PlayerDataFile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
+import java.io.IOException;
+
 public class PlayerInitializer implements Listener {
 
-    private DataFile dataFile;
+    private PlayerDataFile playerDataFile;
 
-    public PlayerInitializer(UniqueLevels uniqueLevels, DataFile dataFile) {
-        this.dataFile = dataFile;
+    public PlayerInitializer(PlayerDataFile playerDataFile) {
+        this.playerDataFile = playerDataFile;
     }
 
     @EventHandler
-    public void RegisterPlayer(PlayerLoginEvent event) {
+    public void RegisterPlayer(PlayerLoginEvent event) throws IOException {
         var player = event.getPlayer();
 
-        if (!(player.hasPlayedBefore())) {
-            dataFile.getDataFile().getConfigurationSection("").createSection(String.valueOf(player.getUniqueId()));
+        if (playerDataFile.containsPlayerData(player.getUniqueId())) {
+            playerDataFile.createPlayerData(player);
         }
     }
 }

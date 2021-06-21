@@ -2,6 +2,8 @@ package ga.uniquecoding.uniquelevels;
 
 import ga.uniquecoding.uniquecore.command.CommandManager;
 import ga.uniquecoding.uniquecore.command.CommandModule;
+import ga.uniquecoding.uniquelevels.events.PlayerInitializer;
+import ga.uniquecoding.uniquelevels.files.PlayerDataFile;
 import ga.uniquecoding.uniquelevels.modules.levels.LevelsModule;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,8 +11,6 @@ import java.io.File;
 
 
 public final class UniqueLevels extends JavaPlugin {
-
-    private final CommandManager commandManager = CommandManager.getInstance();
 
     @Override
     public void onEnable() {
@@ -20,6 +20,9 @@ public final class UniqueLevels extends JavaPlugin {
         this.saveDefaultConfig();
         this.reloadConfig();
         this.registerCommands();
+        getServer().getPluginManager().registerEvents(
+                new PlayerInitializer(new PlayerDataFile(getDataFolder())), this);
+
     }
 
     private void registerCommands() {
@@ -30,7 +33,7 @@ public final class UniqueLevels extends JavaPlugin {
         };
 
         for (CommandModule m : modules)
-            commandManager.register(m.getCommands());
+            CommandManager.getInstance().register(m.getCommands());
     }
 
     /*
