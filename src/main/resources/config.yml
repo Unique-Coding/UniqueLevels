@@ -1,0 +1,11 @@
+levelup-factor: 10
+prestiges:
+  stone:
+    level: 10
+    color: '&7'
+  iron:
+    level: 20
+    color: '&f'
+  gold:
+    level: 30,
+    color: '&6'
