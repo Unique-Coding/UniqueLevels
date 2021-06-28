@@ -8,51 +8,43 @@ import java.io.File;
 import java.io.IOException;
 
 
-public final class UniqueLevels extends JavaPlugin {
+public final class UniqueLevels extends JavaPlugin
+{
 
-    private PlayerDataFile playerDataFile;
+	private PlayerDataFile playerDataFile;
 
-    @Override
-    public void onEnable() {
-    /*
-        All the enable stuff.
-    */
+	@Override
+	public void onEnable()
+	{
+		var folder = new File(getDataFolder(), "data");
 
-        File folder = new File(getDataFolder(), "data");
+		if (!(folder.exists()))
+		{
+			folder.mkdir();
+		}
 
-        if (!(folder.exists())) {
-            folder.mkdir();
-        }
+		File file = new File(folder, "playerdata.yml");
 
-        File file = new File(folder, "playerdata.yml");
+		if (!(file.exists()))
+		{
+			try
+			{
+				file.createNewFile();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 
-        if (!(file.exists())) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+		this.registerEvents();
+		this.saveDefaultConfig();
+		this.reloadConfig();
+	}
 
-        this.registerEvents();
-
-        this.saveDefaultConfig();
-        this.reloadConfig();
-
-    }
-
-    /*
-        Reload the configuration and other stuff.
-    */
-    public void reload() {
-        this.reloadConfig();
-    }
-
-    public void registerCommands() {
-    }
-
-    public void registerEvents() {
-        getServer().getPluginManager().registerEvents(
-                new PlayerInitializer(new PlayerDataFile(getDataFolder())), this);
-    }
+	public void registerEvents()
+	{
+		getServer().getPluginManager().registerEvents(
+				new PlayerInitializer(new PlayerDataFile(getDataFolder())), this);
+	}
 }

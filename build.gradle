@@ -8,8 +8,8 @@ plugins {
 group = 'ga.uniquecoding.uniquelevels'
 version = '0.0.1'
 
-sourceCompatibility = "10"
-targetCompatibility = "10"
+sourceCompatibility = '16'
+targetCompatibility = '16'
 
 repositories {
     mavenCentral()
@@ -21,11 +21,15 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT'
-    implementation files('UniqueCore-0.0.1.jar')}
+    implementation 'ga.uniquecoding:UniqueCore:0.0.1'
+}
 
 processResources {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE

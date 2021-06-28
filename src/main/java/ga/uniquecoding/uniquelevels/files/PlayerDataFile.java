@@ -9,29 +9,36 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-public class PlayerDataFile {
+public class PlayerDataFile
+{
 
-    UniqueLevels uniqueLevels;
+	UniqueLevels uniqueLevels;
 
-    FileConfiguration data = YamlConfiguration.loadConfiguration(
-            new File(uniqueLevels.getDataFolder(), "/data/playerdata.yml"));
+	FileConfiguration data = YamlConfiguration.loadConfiguration(
+			new File(uniqueLevels.getDataFolder(), "/data/playerdata.yml"));
 
-    public PlayerDataFile(File dataFolder) {
-    }
+	public PlayerDataFile(File dataFolder)
+	{
+	}
 
-    public void createPlayerData(UUID uuid, Player player) {
-        data.createSection(uuid.toString());
-        data.createSection(uuid.toString() + "XP:" + player.getTotalExperience());
+	public void createPlayerData(UUID uuid, Player player)
+	{
+		data.createSection(uuid.toString());
+		data.createSection(uuid + "XP:" + player.getTotalExperience());
 
-        try {
-            data.save("playerdata.yml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		try
+		{
+			data.save("playerdata.yml");
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
-    public int getXp(Player player) {
-        return player.getTotalExperience();
-    }
+	public int getXp(Player player)
+	{
+		return player.getTotalExperience();
+	}
 
 }
