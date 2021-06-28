@@ -5,24 +5,26 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
+import java.io.IOException;
+
 public class PlayerInitializer implements Listener
 {
+	private final PlayerDataFile dataFile;
 
-	private final PlayerDataFile playerDataFile;
-
-	public PlayerInitializer(PlayerDataFile playerDataFile)
+	public PlayerInitializer(PlayerDataFile dataFile)
 	{
-		this.playerDataFile = playerDataFile;
+		this.dataFile = dataFile;
 	}
 
 	@EventHandler
-	public void RegisterPlayer(PlayerLoginEvent event)
+	public void onPlayerJoin(PlayerLoginEvent event) throws IOException
 	{
 		var player = event.getPlayer();
 
-		if (player.hasPlayedBefore())
+		if (!player.hasPlayedBefore())
 		{
-			playerDataFile.createPlayerData(player.getUniqueId(), player.getPlayer());
+			dataFile.createPlayerData(player);
+			dataFile.flush();
 		}
 	}
 }

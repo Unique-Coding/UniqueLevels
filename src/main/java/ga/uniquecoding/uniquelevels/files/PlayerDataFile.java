@@ -1,44 +1,29 @@
 package ga.uniquecoding.uniquelevels.files;
 
-import ga.uniquecoding.uniquelevels.UniqueLevels;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import ga.uniquecoding.uniquecore.utils.DataFile;
 import org.bukkit.entity.Player;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
+import java.nio.file.Path;
 
-public class PlayerDataFile
+public final class PlayerDataFile extends DataFile
 {
-
-	UniqueLevels uniqueLevels;
-
-	FileConfiguration data = YamlConfiguration.loadConfiguration(
-			new File(uniqueLevels.getDataFolder(), "/data/playerdata.yml"));
-
-	public PlayerDataFile(File dataFolder)
+	public PlayerDataFile(Path rootPath) throws IOException
 	{
+		super(rootPath, "playerdata");
 	}
 
-	public void createPlayerData(UUID uuid, Player player)
+	public void createPlayerData(Player player)
 	{
-		data.createSection(uuid.toString());
-		data.createSection(uuid + "XP:" + player.getTotalExperience());
+		var uuid = player.getUniqueId();
+		var playerSection = data.createSection(uuid.toString());
 
-		try
-		{
-			data.save("playerdata.yml");
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		playerSection.set("xp", 0);
 	}
 
 	public int getXp(Player player)
 	{
-		return player.getTotalExperience();
+		return data.getConfigurationSection(player.getUniqueId().toString())
+				   .getInt("xp");
 	}
-
 }
