@@ -19,8 +19,8 @@ public class PlayerInitializer implements Listener {
     public void RegisterPlayer(PlayerLoginEvent event) throws IOException {
         var player = event.getPlayer();
 
-        if (playerDataFile.containsPlayerData(player.getUniqueId())) {
-            playerDataFile.createPlayerData(player);
+        if (player.hasPlayedBefore()) {
+            playerDataFile.createPlayerData(player.getUniqueId(), player.getPlayer());
         }
     }
 }

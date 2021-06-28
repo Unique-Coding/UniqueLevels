@@ -1,39 +1,44 @@
 package ga.uniquecoding.uniquelevels;
 
-import ga.uniquecoding.uniquecore.command.CommandManager;
-import ga.uniquecoding.uniquecore.command.CommandModule;
 import ga.uniquecoding.uniquelevels.events.PlayerInitializer;
 import ga.uniquecoding.uniquelevels.files.PlayerDataFile;
-import ga.uniquecoding.uniquelevels.modules.levels.LevelsModule;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public final class UniqueLevels extends JavaPlugin {
+
+    private PlayerDataFile playerDataFile;
 
     @Override
     public void onEnable() {
     /*
         All the enable stuff.
     */
+
+        File folder = new File(getDataFolder(), "data");
+
+        if (!(folder.exists())) {
+            folder.mkdir();
+        }
+
+        File file = new File(folder, "playerdata.yml");
+
+        if (!(file.exists())) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.registerEvents();
+
         this.saveDefaultConfig();
         this.reloadConfig();
-        this.registerCommands();
-        getServer().getPluginManager().registerEvents(
-                new PlayerInitializer(new PlayerDataFile(getDataFolder())), this);
 
-    }
-
-    private void registerCommands() {
-        var storageFolder = new File(getDataFolder() + "/data/");
-
-        CommandModule[] modules = {
-                new LevelsModule(this, storageFolder)
-        };
-
-        for (CommandModule m : modules)
-            CommandManager.getInstance().register(m.getCommands());
     }
 
     /*
@@ -41,5 +46,13 @@ public final class UniqueLevels extends JavaPlugin {
     */
     public void reload() {
         this.reloadConfig();
+    }
+
+    public void registerCommands() {
+    }
+
+    public void registerEvents() {
+        getServer().getPluginManager().registerEvents(
+                new PlayerInitializer(new PlayerDataFile(getDataFolder())), this);
     }
 }
