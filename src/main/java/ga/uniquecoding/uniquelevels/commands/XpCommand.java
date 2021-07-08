@@ -1,40 +1,33 @@
 package ga.uniquecoding.uniquelevels.commands;
 
-import ga.uniquecoding.uniquecore.command.PluginCommandWrapper;
-import ga.uniquecoding.uniquecore.command.exceptions.CommandExecutionException;
-import ga.uniquecoding.uniquecore.command.exceptions.InvalidUsageException;
-import ga.uniquecoding.uniquecore.command.tabcompletion.ArgumentTabCompleter;
+import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.arguments.PlayerArgument;
 import ga.uniquecoding.uniquelevels.files.PlayerDataFile;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 
-import static ga.uniquecoding.uniquecore.command.tabcompletion.Argument.ONLINE_PLAYER;
+import java.util.List;
+
 import static ga.uniquecoding.uniquelevels.UniqueLevels.NUMBER_FORMAT;
 
-public class XpCommand extends PluginCommandWrapper
+public class XpCommand extends CommandAPICommand
 {
 	private final PlayerDataFile dataFile;
 
-	public XpCommand(PlayerDataFile dataFile, PluginCommand wrapped)
+	public XpCommand(PlayerDataFile dataFile)
 	{
-		super(wrapped, ArgumentTabCompleter.ofArgs(ONLINE_PLAYER));
+		super("xp");
+		setArguments(List.of(new PlayerArgument("player")));
+		withPermission("levels.admin.xp");
+		executes(this::execute);
+
 		this.dataFile = dataFile;
 	}
 
-	@Override
-	public void execute(CommandSender sender, String[] args) throws CommandExecutionException
+	private void execute(CommandSender sender, Object[] args)
 	{
-		if (args.length != 1)
-			throw new InvalidUsageException("Invalid number of arguments");
-
-		var target = Bukkit.getPlayer(args[0]);
-
-		if (target == null)
-			throw new CommandExecutionException("That player is not online");
-
+		var target = (Player) args[0];
 		var xp = dataFile.getXp(target);
-
 		sender.sendMessage(target.getName() + " has " + NUMBER_FORMAT.format(xp) + " xp");
 	}
 }

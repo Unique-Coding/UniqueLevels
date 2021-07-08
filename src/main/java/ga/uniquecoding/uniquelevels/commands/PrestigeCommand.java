@@ -1,36 +1,31 @@
 package ga.uniquecoding.uniquelevels.commands;
 
-import ga.uniquecoding.uniquecore.command.PluginCommandWrapper;
-import ga.uniquecoding.uniquecore.command.exceptions.CommandExecutionException;
-import ga.uniquecoding.uniquecore.command.exceptions.InvalidUsageException;
+import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.arguments.PlayerArgument;
 import ga.uniquecoding.uniquelevels.PlayerDataFetcher;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 
-public class PrestigeCommand extends PluginCommandWrapper
+import java.util.List;
+
+public class PrestigeCommand extends CommandAPICommand
 {
 	private final PlayerDataFetcher dataFetcher;
 
-	public PrestigeCommand(PlayerDataFetcher dataFetcher, PluginCommand wrapped)
+	public PrestigeCommand(PlayerDataFetcher dataFetcher)
 	{
-		super(wrapped);
+		super("prestige");
+		setAliases(new String[]{"pres"});
+		setArguments(List.of(new PlayerArgument("player")));
+
 		this.dataFetcher = dataFetcher;
 	}
 
-	@Override
-	public void execute(CommandSender sender, String[] args) throws CommandExecutionException
+	private void execute(CommandSender sender, Object[] args)
 	{
-		if (args.length != 1)
-			throw new InvalidUsageException("Invalid number of arguments");
 
-		var target = Bukkit.getPlayer(args[0]);
-
-		if (target == null)
-			throw new CommandExecutionException("That player is not online");
-
+		var target = (Player) args[0];
 		var prestige = dataFetcher.getPrestige(target);
-
 		sender.sendMessage(target.getName() + " is a " + prestige.name() + " prestige");
 	}
 }

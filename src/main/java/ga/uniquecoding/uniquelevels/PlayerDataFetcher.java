@@ -32,7 +32,7 @@ public class PlayerDataFetcher
 	{
 		var xp = getXp(player);
 
-		return (int) (log(xp) / log(levelingFactor));
+		return (int) (log(xp + 1.0) / log(levelingFactor));
 	}
 
 	public Prestige getPrestige(Player player)

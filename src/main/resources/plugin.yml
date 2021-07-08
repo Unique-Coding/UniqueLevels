@@ -6,10 +6,6 @@ authors: [ Zaniey ]
 description: Levels, Prestiges and Rewards.
 
 commands:
-  uniquelevels:
-    aliases: ul
-    description: The Default plugin command.
-    permission: uniquelevels.help
   xp:
     description: Gets a player's xp
     permission: uniquelevels.admin.xp

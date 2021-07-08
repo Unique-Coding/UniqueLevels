@@ -1,7 +1,7 @@
 package ga.uniquecoding.uniquelevels;
 
+import dev.jorel.commandapi.CommandAPICommand;
 import ga.uniquecoding.uniquelevels.commands.LevelCommand;
-import ga.uniquecoding.uniquelevels.commands.MainCommand;
 import ga.uniquecoding.uniquelevels.commands.PrestigeCommand;
 import ga.uniquecoding.uniquelevels.commands.XpCommand;
 import ga.uniquecoding.uniquelevels.events.PlayerInitializer;
@@ -40,13 +40,11 @@ public final class UniqueLevels extends JavaPlugin
 							   new PlayerInitializer(playerFile), this
 					   );
 
-			var main = new MainCommand(getCommand("uniquelevels"));
+			var xp = new XpCommand(playerFile);
+			var level = new LevelCommand(dataFetcher);
+			var prestige = new PrestigeCommand(dataFetcher);
 
-			var xp = new XpCommand(playerFile, getCommand("xp"));
-			var level = new LevelCommand(dataFetcher, getCommand("level"));
-			var prestige = new PrestigeCommand(dataFetcher, getCommand("prestige"));
-
-			main.addSubCommands(xp, level, prestige);
+			registerCommands(xp, level, prestige);
 		}
 		catch (IOException e)
 		{
@@ -56,12 +54,13 @@ public final class UniqueLevels extends JavaPlugin
 
 	private Collection<Prestige> getPrestiges(FileConfiguration config)
 	{
-		var prestigeNames = config.getConfigurationSection("prestiges").getKeys(false);
+		var prestigesSection = config.getConfigurationSection("prestiges");
+		var prestigeNames = prestigesSection.getKeys(false);
 		var prestiges = new ArrayList<Prestige>();
 
 		for (var prestigeName : prestigeNames)
 		{
-			var prestige = config.getConfigurationSection(prestigeName);
+			var prestige = prestigesSection.getConfigurationSection(prestigeName);
 			var level = prestige.getInt("level");
 			var color = prestige.getString("color");
 
@@ -71,5 +70,13 @@ public final class UniqueLevels extends JavaPlugin
 		prestiges.sort(comparingInt(Prestige::level));
 
 		return prestiges;
+	}
+
+	private static void registerCommands(CommandAPICommand... commands)
+	{
+		for (var command : commands)
+		{
+			command.register();
+		}
 	}
 }
