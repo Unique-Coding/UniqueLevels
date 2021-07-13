@@ -2,16 +2,5 @@ name: UniqueLevels
 version: 0.0.1
 main: ga.uniquecoding.uniquelevels.UniqueLevels
 api-version: 1.17
-authors: [ Zaniey ]
+authors: [ Zaniey, HydroPage ]
 description: Levels, Prestiges and Rewards.
-
-commands:
-  xp:
-    description: Gets a player's xp
-    permission: uniquelevels.admin.xp
-  level:
-    description: Gets a player's level
-    permission: uniquelevels.admin.level
-  prestige:
-    description: Gets a player's prestige
-    permission: uniquelevels.admin.prestige

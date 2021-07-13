@@ -1,6 +1,8 @@
 package ga.uniquecoding.uniquelevels;
 
+import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.CommandAPIConfig;
 import ga.uniquecoding.uniquelevels.commands.LevelCommand;
 import ga.uniquecoding.uniquelevels.commands.PrestigeCommand;
 import ga.uniquecoding.uniquelevels.commands.XpCommand;
@@ -11,7 +13,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static java.util.Comparator.comparingInt;
 
@@ -22,8 +25,16 @@ public final class UniqueLevels extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
+		CommandAPI.onEnable(this);
+	}
+
+	@Override
+	public void onLoad()
+	{
 		try
 		{
+			CommandAPI.onLoad(new CommandAPIConfig());
+
 			this.saveDefaultConfig();
 			this.reloadConfig();
 
@@ -32,19 +43,20 @@ public final class UniqueLevels extends JavaPlugin
 			var prestiges = getPrestiges(config);
 
 			var dataPath = getDataFolder().toPath();
+
 			var playerFile = new PlayerDataFile(dataPath);
 			var dataFetcher = new PlayerDataFetcher(prestiges, config.getInt("levelup-factor"), playerFile);
-
-			getServer().getPluginManager()
-					   .registerEvents(
-							   new PlayerInitializer(playerFile), this
-					   );
 
 			var xp = new XpCommand(playerFile);
 			var level = new LevelCommand(dataFetcher);
 			var prestige = new PrestigeCommand(dataFetcher);
 
 			registerCommands(xp, level, prestige);
+
+			getServer().getPluginManager()
+					   .registerEvents(
+							   new PlayerInitializer(playerFile), this
+					   );
 		}
 		catch (IOException e)
 		{
@@ -56,7 +68,7 @@ public final class UniqueLevels extends JavaPlugin
 	{
 		var prestigesSection = config.getConfigurationSection("prestiges");
 		var prestigeNames = prestigesSection.getKeys(false);
-		var prestiges = new ArrayList<Prestige>();
+		var out = new ArrayList<Prestige>();
 
 		for (var prestigeName : prestigeNames)
 		{
@@ -64,12 +76,12 @@ public final class UniqueLevels extends JavaPlugin
 			var level = prestige.getInt("level");
 			var color = prestige.getString("color");
 
-			prestiges.add(new Prestige(prestigeName, level, color));
+			out.add(new Prestige(prestigeName, level, color));
 		}
 
-		prestiges.sort(comparingInt(Prestige::level));
+		out.sort(comparingInt(Prestige::level));
 
-		return prestiges;
+		return out;
 	}
 
 	private static void registerCommands(CommandAPICommand... commands)

@@ -18,7 +18,7 @@ public class LevelCommand extends CommandAPICommand
 	{
 		super("level");
 		setAliases(new String[]{"lvl"});
-		setArguments(List.of(new PlayerArgument("player")));
+		withArguments(new PlayerArgument("player"));
 		withPermission("levels.admin.level");
 		executes(this::execute);
 

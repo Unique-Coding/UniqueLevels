@@ -6,8 +6,6 @@ import ga.uniquecoding.uniquelevels.files.PlayerDataFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 import static ga.uniquecoding.uniquelevels.UniqueLevels.NUMBER_FORMAT;
 
 public class XpCommand extends CommandAPICommand
@@ -16,8 +14,8 @@ public class XpCommand extends CommandAPICommand
 
 	public XpCommand(PlayerDataFile dataFile)
 	{
-		super("xp");
-		setArguments(List.of(new PlayerArgument("player")));
+		super("ulxp");
+		withArguments(new PlayerArgument("player"));
 		withPermission("levels.admin.xp");
 		executes(this::execute);
 

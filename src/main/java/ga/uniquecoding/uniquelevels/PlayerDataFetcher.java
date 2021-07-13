@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 import static java.lang.Math.log;
 import static java.util.Collections.reverse;
@@ -37,18 +36,16 @@ public class PlayerDataFetcher
 
 	public Prestige getPrestige(Player player)
 	{
+		var level = getLevel(player);
 		var prestigesCopy = new ArrayList<>(prestiges);
-
 		var out = prestigesCopy.get(0); // Lowest pres
 
 		reverse(prestigesCopy);
 
 		for (var prestige : prestigesCopy)
 		{
-			var level = getLevel(player);
-			if (prestige.level() >= level) {
+			if (prestige.level() >= level)
 				out = prestige;
-			}
 		}
 
 		return out;
